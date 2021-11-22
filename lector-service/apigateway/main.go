@@ -9,9 +9,10 @@ import (
 )
 
 func main() {
-	svc := service.NewPredictService()
-	predictCovidEndpoint := endpoint.MakePredictCovidEndpoint(svc)
-	handler.NewHttpHandler(predictCovidEndpoint)
-	http.ListenAndServe(":8083", nil)
+
+	svc := service.NewDatasetService()
+	loadDatasetEndpoint := endpoint.MakeLoadDatasetEndpoint(svc)
+	handler.NewHttpHandler(loadDatasetEndpoint)
+	http.ListenAndServe(":8081", nil)
 
 }

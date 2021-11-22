@@ -9,16 +9,15 @@ import (
 	httptransport "github.com/go-kit/kit/transport/http"
 )
 
+func NewHttpHandler(loadDatasetEndpoint endpoint.Endpoint) {
 
-
-func HandlerHttp(loadDatasetEndpoint endpoint.Endpoint) {
 	loadDatasetHandler := httptransport.NewServer(
 		loadDatasetEndpoint,
 		decodeLoadDatasetRequest,
 		encodeResponse,
 	)
 
-	http.Handle("/obtener-dataset", loadDatasetHandler)
+	http.Handle("/load-dataset", loadDatasetHandler)
 	// http.Handle("/get-dataset", loadDatasetHandler)
 }
 

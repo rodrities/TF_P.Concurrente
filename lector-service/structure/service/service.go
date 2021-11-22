@@ -11,31 +11,31 @@ import (
 	"strings"
 
 	"github.com/dustin/go-humanize"
-
-	"github.com/rodrities/lector_service/structure/store"
+	"github.com/rodrities/lector-service/structure/store"
 )
 
+// ErrEmpty is returned when an input string is empty.
 var ErrEmpty = errors.New("empty string")
 
-type Contador struct {
+type WriteCounter struct {
 	Total uint64
 }
 
-func (c *Contador) Write(p []byte) (int, error) {
+func (wc *WriteCounter) Write(p []byte) (int, error) {
 	n := len(p)
-	c.Total += uint64(n)
-	c.PrintProgress()
+	wc.Total += uint64(n)
+	wc.PrintProgress()
 	return n, nil
 }
 
-func (c Contador) PrintProgress() {
+func (wc WriteCounter) PrintProgress() {
 	// Clear the line by using a character return to go back to the start and remove
 	// the remaining characters by filling it with spaces
 	fmt.Printf("\r%s", strings.Repeat(" ", 35))
 
 	// Return again and print current status of download
 	// We use the humanize package to print the bytes in a meaningful way (e.g. 10 MB)
-	fmt.Printf("\rDescargando... %s completado", humanize.Bytes(c.Total))
+	fmt.Printf("\rDescargando... %s completado", humanize.Bytes(wc.Total))
 }
 
 func DownloadFile(filepath string, url string) error {
@@ -56,7 +56,7 @@ func DownloadFile(filepath string, url string) error {
 	defer resp.Body.Close()
 
 	// Create our progress reporter and pass it to be used alongside our writer
-	counter := &Contador{}
+	counter := &WriteCounter{}
 	if _, err = io.Copy(out, io.TeeReader(resp.Body, counter)); err != nil {
 		out.Close()
 		return err
@@ -124,7 +124,7 @@ func (datasetService) LoadDataset() ([][]interface{}, []string, error) {
 		// crear arreglo
 		tup := strings.Split(line, ",")
 		// arreglo con indices de 4-18 los cuales seran los inputs
-		pattern := tup[4:18]
+		pattern := tup[0:2]
 		// arreglo con el target que se encuentra en el indice 2
 		target := tup[2]
 		// arreglo X que obtendra los inputs convertidos de dato string a float64

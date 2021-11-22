@@ -1,9 +1,9 @@
 package entity
 
-type Response struct {
-	Entradas [][]interface{} `json:"entradas"`
-	Targets  []string        `json:"targets"`
+type LoadDatasetResponse struct {
+	Inputs  [][]interface{} `json:"inputs"`
+	Targets []string        `json:"targets"`
 }
-type Request struct {
-	Nro_filas int `json:"nro_filas"`
+type LoadDatasetRequest struct {
+	N_ROWS int `json:"n_rows"`
 }
